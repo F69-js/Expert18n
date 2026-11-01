@@ -261,8 +261,9 @@
   };
 
   // プレイグラウンド画面の各ラベルを多言語化する関数
-  function translatePageUi() {
-    Expert18n.textlist.sysUi = sysUiLocales;
+ function translatePageUi() {
+    // 🌟 修正：深い階層を作らず、現在の言語のUI辞書を直接 textlist.sysUi にガチッと結合
+    Expert18n.textlist[Expert18n.language].sysUi = sysUiLocales[Expert18n.language];
 
     document.getElementById('ui-title').textContent = Expert18n.for('sysUi.title');
     document.getElementById('ui-meta').textContent = Expert18n.for('sysUi.meta');
@@ -275,7 +276,6 @@
     document.getElementById('ui-label-call').textContent = Expert18n.for('sysUi.labelCall');
     document.getElementById('ui-btn-send').textContent = Expert18n.for('sysUi.btnSend');
   }
-
   // 🖥️ ターミナル風にログを出力するメイン翻訳関数
   window.runTranslation = function() {
     const key = document.getElementById('sim-key').value.trim();
