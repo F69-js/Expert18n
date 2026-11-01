@@ -23,7 +23,7 @@ Expert18n.language = 'en';
 console.log(Expert18n.for('cart_info', { valDate: new Date(), count: 5, item: 'apple', total: 12500 }));
 // Output: "On 11/1/2026, you purchased 5 apples for \$12,500.00."
 ```
-##logo
+## logo
 If you choose to use this library, we would appreciate it if you could display this logo somewhere visible to users (it is acceptable for it to be located in a deeper section, such as within a settings menu, provided that users can access it).
 
 ![expert18n's logo](./images/logo.png)
