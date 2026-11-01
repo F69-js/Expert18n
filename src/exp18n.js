@@ -103,3 +103,4 @@ class Expert18n {
     return this.language === 'en' && params.count !== 1 && !key.includes('{') && txt === key ? this.pluralizeEn(txt) : txt;
   }
 }
+export default Expert18n;
