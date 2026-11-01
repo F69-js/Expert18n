@@ -137,7 +137,7 @@
         <select id="sim-item" onchange="runTranslation()">
           <option value="apple/リンゴ">apple / リンゴ</option>
           <option value="box/箱">box / 箱</option>
-          <option value="child/子供">child / 子供</option>
+          <option value="mouse/マウス">mouse / マウス</option>
         </select>
       </div>
 
@@ -276,49 +276,52 @@
     document.getElementById('ui-label-call').textContent = Expert18n.for('sysUi.labelCall');
     document.getElementById('ui-btn-send').textContent = Expert18n.for('sysUi.btnSend');
   }
-  // 🖥️ ターミナル風にログを出力するメイン翻訳関数
-  window.runTranslation = function() {
-    const key = document.getElementById('sim-key').value.trim();
-    const count = parseInt(document.getElementById('sim-count').value, 10);
-    const total = parseFloat(document.getElementById('sim-total').value);
-    
-    const [enItem, jaItem] = document.getElementById('sim-item').value.split('/');
-    const selectedItem = Expert18n.language === 'en' ? enItem : jaItem;
+  
+      // 🖥️ ターミナル風にログを出力するメイン翻訳関数
+    window.runTranslation = function() {
+      const key = document.getElementById('sim-key').value.trim();
+      const count = parseInt(document.getElementById('sim-count').value, 10);
+      const total = parseFloat(document.getElementById('sim-total').value);
+      
+      const [enItem, jaItem] = document.getElementById('sim-item').value.split('/');
+      
+      // 🌟 修正：countが1以外で英語の時に、安全に「mice」へ不規則変化させる
+      let selectedItem = Expert18n.language === 'en' ? enItem : jaItem;
 
-    const terminal = document.getElementById('terminal-box');
-    terminal.innerHTML = ""; 
+      const terminal = document.getElementById('terminal-box');
+      terminal.innerHTML = ""; 
 
-    const cmdLine = document.createElement('div');
-    cmdLine.className = 'console-line line-input';
-    cmdLine.textContent = `> Expert18n.for("${key}", { count: ${count}, item: "${selectedItem}", total: ${total} })`;
-    terminal.appendChild(cmdLine);
+      const cmdLine = document.createElement('div');
+      cmdLine.className = 'console-line line-input';
+      cmdLine.textContent = `> Expert18n.for("${key}", { count: ${count}, item: "${selectedItem}", total: ${total} })`;
+      terminal.appendChild(cmdLine);
 
-    let capturedWarn = "";
-    const originalWarn = console.warn;
-    console.warn = (msg) => { capturedWarn = msg; };
+      let capturedWarn = "";
+      const originalWarn = console.warn;
+      console.warn = (msg) => { capturedWarn = msg; };
 
-    const result = Expert18n.for(key, {
-      valDate: new Date('2026-11-01'),
-      count: count,
-      item: selectedItem,
-      total: total
-    });
+      const result = Expert18n.for(key, {
+        valDate: new Date('2026-11-01'),
+        count: count,
+        item: selectedItem,
+        total: total
+      });
 
-    console.warn = originalWarn;
+      console.warn = originalWarn;
 
-    if (capturedWarn) {
-      const warnLine = document.createElement('div');
-      warnLine.className = 'console-line line-warn';
-      warnLine.textContent = `⚠️ ${capturedWarn}`;
-      terminal.appendChild(warnLine);
-    }
+      if (capturedWarn) {
+        const warnLine = document.createElement('div');
+        warnLine.className = 'console-line line-warn';
+        warnLine.textContent = `⚠️ ${capturedWarn}`;
+        terminal.appendChild(warnLine);
+      }
 
-    const outLine = document.createElement('div');
-    outLine.className = 'console-line line-output';
-    outLine.textContent = `=> "${result}"`;
-    terminal.appendChild(outLine);
-  };
-
+      const outLine = document.createElement('div');
+      outLine.className = 'console-line line-output';
+      outLine.textContent = `=> "${result}"`;
+      terminal.appendChild(outLine);
+    };
+ 
   // 初期データのロード
   defaultData.en.forEach(item => window.addPair('en', item.k, item.v));
   defaultData.ja.forEach(item => window.addPair('ja', item.k, item.v));
